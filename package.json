@@ -1,0 +1,14 @@
+{
+  "name": "hishop",
+  "version": "1.0.0",
+  "description": "MERN shopping APP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "Van Nguyen Nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
