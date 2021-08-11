@@ -11,7 +11,6 @@ router.get(
   "/",
   asyncHandler(async (req, res) => {
     const products = await Product.find({});
-    console.log(products);
     res.json(products);
   })
 );
@@ -22,17 +21,13 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
-    const valid = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (valid) {
-      const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id);
 
-      if (product) {
-        res.json(product);
-      } else {
-        res.status(404).json({ message: "Product not found" });
-      }
+    if (product) {
+      res.json(product);
     } else {
-      res.status(404).json({ message: "Product not found" });
+      res.status(404);
+      throw new Error("Product not found");
     }
   })
 );
