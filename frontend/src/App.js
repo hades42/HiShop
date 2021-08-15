@@ -11,6 +11,7 @@ import ProfileScreen from "./screen/ProfileScreen";
 import ShippingScreen from "./screen/ShippingScreen";
 import PaymentScreen from "./screen/PaymentScreen";
 import PlaceOrderScreen from "./screen/PlaceOrderScreen";
+import OrderScreen from "./screen/OrderScreen";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <main className="py-3">
         <Container>
           <Route path="/shipping" component={ShippingScreen}></Route>
+          <Route path="/order/:id" component={OrderScreen}></Route>
           <Route path="/payment" component={PaymentScreen}></Route>
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/login" component={LoginScreen}></Route>
