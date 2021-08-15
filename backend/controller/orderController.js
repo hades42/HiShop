@@ -4,7 +4,6 @@ import Order from "../models/orderModal.js";
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
-
 const addOrderItems = asynHandler(async (req, res) => {
   const {
     orderItems,
@@ -19,7 +18,6 @@ const addOrderItems = asynHandler(async (req, res) => {
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
-    return;
   } else {
     const order = new Order({
       orderItems,
@@ -53,4 +51,30 @@ const getOrderById = asynHandler(async (req, res) => {
     throw new Error("Order not found");
   }
 });
-export { addOrderItems, getOrderById };
+
+// @desc    Update order to paid
+// @route   PUT /api/orders/:id
+// @access  Private
+const updateOrderToPaid = asynHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
+    };
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid };
