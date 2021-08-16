@@ -69,6 +69,7 @@ const updateUserprofile = asyncHandler(async (req, res) => {
     throw new error("user not found");
   }
 });
+
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
@@ -124,6 +125,44 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get user by ID
+// @route   DELETE /api/users/:id
+// @access  Private/Admin
+const getUserbyId = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(400);
+    throw new Error("User not found");
+  }
+});
+
+// @desc    update user
+// @route   PUT /api/users/:id
+// @access  private/admin
+const updateUserbyId = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin || false;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(401);
+    throw new error("user not found");
+  }
+});
+
 export {
   deleteUser,
   getUsers,
@@ -131,4 +170,6 @@ export {
   getUserProfile,
   registerUser,
   updateUserprofile,
+  getUserbyId,
+  updateUserbyId,
 };
