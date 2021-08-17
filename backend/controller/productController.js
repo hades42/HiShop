@@ -9,7 +9,7 @@ const getProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
-// @desc    Fetch single products
+// @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
 const getProductsById = asyncHandler(async (req, res) => {
@@ -23,4 +23,18 @@ const getProductsById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProducts, getProductsById };
+// @desc    Delete a product
+// @route   GET /api/products/:id
+// @access  Public
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    await product.remove();
+    res.json({ message: "Product Remove!" });
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+});
+export { getProducts, getProductsById, deleteProduct };
