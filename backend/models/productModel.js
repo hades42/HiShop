@@ -6,6 +6,13 @@ const reviewSchema = mongoose.Schema(
     // Individual rating
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
+    // Associate the user with the review
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      // Add a relationship between product and user.
+      ref: "User",
+    },
   },
   {
     timestamps: true,
