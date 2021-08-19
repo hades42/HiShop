@@ -6,6 +6,7 @@ import Loader from "../component/Loader";
 import { LinkContainer } from "react-router-bootstrap";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrder } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstant";
 
 const ProfileScreen = ({ location, history }) => {
   const [email, setEmail] = useState("");
@@ -33,7 +34,8 @@ const ProfileScreen = ({ location, history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrder());
       } else {
@@ -41,7 +43,7 @@ const ProfileScreen = ({ location, history }) => {
         setEmail(user.email);
       }
     }
-  }, [history, userInfo, dispatch, user]);
+  }, [history, userInfo, dispatch, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
